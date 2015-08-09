@@ -1,0 +1,28 @@
+﻿<Window x:Class="CardFiller.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="500" xmlns:my="clr-namespace:CardFiller">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="289*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="70" />
+            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="100*" />
+        </Grid.ColumnDefinitions>
+        <StackPanel Name="stackPanelTlacitka" CanHorizontallyScroll="True" Grid.Column="1" Grid.Row="1" />
+        <ListBox  Name="listBox1" Grid.Row="1" />
+        <ListBox Grid.Column="2" Name="listBoxReakce" Grid.Row="1" />
+        <ListBox Grid.Column="3" Name="listBoxStiny" Grid.Row="1" />
+        <ListBox Grid.Column="4" Name="listBoxDruhy" Grid.Row="1" />
+        <Label Content="Karty" Margin="0,-4,0,0" Name="Label1" HorizontalContentAlignment="Center" />
+        <Label Content="Možnosti" Margin="0,-4,0,0" Name="Label2" Grid.Column="1" HorizontalContentAlignment="Center" />
+        <Label Content="Reakce" Margin="0,-4,0,0" Name="Label3" Grid.Column="2" HorizontalContentAlignment="Center" />
+        <Label Content="Stíny" Margin="0,-4,0,0" Name="Label4" Grid.Column="3" HorizontalContentAlignment="Center" />
+        <Label Content="Druhy" Margin="0,-4,0,0" Name="Label5" Grid.Column="4" HorizontalContentAlignment="Center" />
+    </Grid>
+</Window>
