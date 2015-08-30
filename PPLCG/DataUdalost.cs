@@ -5,41 +5,43 @@ using System.Text;
 
 namespace PPLCG
 {
-    public class DataUdalost
+    public class DataUdalost:DataKarta
     {
-        public int Cena;
+        public int Cena
+        {
+            get { return _Cena; }
+            set { _Cena = value; OnPropertyChanged("Cena"); }
+        }
+        int _Cena = 0;
         public DataUdalost()
         {
             Cena = 0;
         }
-        public DataUdalost(int cena)
+        public DataUdalost(DataKarta dk, int cena) : base(dk)
         {
             Cena = cena;
         }
-        public bool Save(Nini.Config.IConfigSource source)
+        public override EReturn Save(Nini.Config.IConfig config)
         {
-            Nini.Config.IConfig config = source.AddConfig("Udalost");
+            base.Save(config);
+            //Nini.Config.IConfig config = source.AddConfig("Udalost");
             if (config != null)
             {
                 config.Set("Cena", Cena);
-                return false;
+                return EReturn.NoError;
             }
-            else return true;
+            else return EReturn.Error;
         }
-        public bool Load(Nini.Config.IConfigSource source)
+        public override EReturn Load(Nini.Config.IConfig config)
         {
-            Nini.Config.IConfig config = GetConfig(source, "Udalost");
+            base.Load(config);
+            //Nini.Config.IConfig config = GetConfig(source, "Udalost");
             if (config != null)
             {
                 Cena = config.GetInt("Cena");
-                return false;
+                return EReturn.NoError;
             }
-            else return true;
-        }
-        public Nini.Config.IConfig GetConfig(Nini.Config.IConfigSource source, string nameConfig)
-        {
-            if (source.Configs[1].Name == nameConfig) return source.Configs[nameConfig];
-            else return null;
+            else return EReturn.Error;
         }
     }
 }

@@ -5,13 +5,38 @@ using System.Text;
 
 namespace PPLCG
 {
-    public class DataSpojenec
+    public class DataSpojenec:DataKarta
     {
-        public int Zdroje;
-        public int Vule;
-        public int Utok;
-        public int Obrana;
-        public int Zivoty;
+        public int Zdroje
+        {
+            get { return _Zdroje; }
+            set { _Zdroje = value; OnPropertyChanged("Zdroje"); }
+        }
+        int _Zdroje = 0;
+        public int Vule
+        {
+            get { return _Vule; }
+            set { _Vule = value; OnPropertyChanged("Vule"); }
+        }
+        int _Vule = 0;
+        public int Utok
+        {
+            get { return _Utok; }
+            set { _Utok = value; OnPropertyChanged("Utok"); }
+        }
+        int _Utok = 0;
+        public int Obrana
+        {
+            get { return _Obrana; }
+            set { _Obrana = value; OnPropertyChanged("Obrana"); }
+        }
+        int _Obrana = 0;
+        public int Zivoty
+        {
+            get { return _Zivoty; }
+            set { _Zivoty = value; OnPropertyChanged("Zivoty"); }
+        }
+        int _Zivoty = 0;
         public DataSpojenec()
         {
              Zdroje = 0;
@@ -20,7 +45,7 @@ namespace PPLCG
              Obrana = 0;
              Zivoty = 0;
         }
-        public DataSpojenec(int zivoty, int utok, int obrana, int vule, int zdroje)
+        public DataSpojenec(DataKarta dk, int zivoty, int utok, int obrana, int vule, int zdroje) : base(dk)
         {
             Zdroje = zdroje;
             Vule = vule;
@@ -28,9 +53,10 @@ namespace PPLCG
             Obrana = obrana;
             Zivoty = zivoty;
         }
-        public bool Save(Nini.Config.IConfigSource source)
+        public override EReturn Save(Nini.Config.IConfig config)
         {
-            Nini.Config.IConfig config = source.AddConfig("Spojenec");
+            base.Save(config);
+            //Nini.Config.IConfig config = source.AddConfig("Spojenec");
             if (config != null)
             {
                 config.Set("Zdroje", Zdroje);
@@ -38,13 +64,14 @@ namespace PPLCG
                 config.Set("Utok", Utok);
                 config.Set("Obrana", Obrana);
                 config.Set("Zivoty", Zivoty);
-                return false;
+                return EReturn.NoError;
             }
-            else return true;
+            else return EReturn.Error;
         }
-        public bool Load(Nini.Config.IConfigSource source)
+        public override EReturn Load(Nini.Config.IConfig config)
         {
-            Nini.Config.IConfig config = GetConfig(source, "Spojenec");
+            base.Load(config);
+            //Nini.Config.IConfig config = GetConfig(source, "Spojenec");
             if (config != null)
             {
                 Zdroje = config.GetInt("Zdroje");
@@ -52,14 +79,9 @@ namespace PPLCG
                 Utok = config.GetInt("Utok");
                 Obrana = config.GetInt("Obrana");
                 Zivoty = config.GetInt("Zivoty");
-                return false;
+                return EReturn.NoError;
             }
-            else return true;
-        }
-        public Nini.Config.IConfig GetConfig(Nini.Config.IConfigSource source, string nameConfig)
-        {
-            if (source.Configs[1].Name == nameConfig) return source.Configs[nameConfig];
-            else return null;
+            else return EReturn.Error;
         }
     }
 }

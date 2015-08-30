@@ -5,8 +5,8 @@ using System.Text;
 
 namespace PPLCG
 {
-    public enum ESfery
+    public enum EReturn
     {
-        Neutralni, Ducha, Taktiky, Vedeni, Veleni, none
+        NoError,Error
     }
 }

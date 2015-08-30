@@ -5,41 +5,48 @@ using System.Text;
 
 namespace PPLCG
 {
-    public class DataDoplnek
+    public class DataDoplnek : DataKarta
     {
-        public int Cena;
+        public int Cena
+        {
+            get { return _Cena; }
+            set { _Cena = value; OnPropertyChanged("Cena"); }
+        }
+        int _Cena = 0;
         public DataDoplnek()
         {
             Cena = 0;
         }
-        public DataDoplnek(int cena)
-        {
+        public DataDoplnek(DataKarta dk, int cena) : base(dk)
+        { 
             Cena = cena;
         }
-        public bool Save(Nini.Config.IConfigSource source)
+        public override EReturn Save(Nini.Config.IConfig config)
         {
-            Nini.Config.IConfig config = source.AddConfig("Doplnek");
+            base.Save(config);
+            //Nini.Config.IConfig config = source.AddConfig("Doplnek");
             if (config != null)
             {
                 config.Set("Cena", Cena);
-                return false;
+                return EReturn.NoError;
             }
-            else return true;
+            else return EReturn.Error;
         }
-        public bool Load(Nini.Config.IConfigSource source)
+        public override EReturn Load(Nini.Config.IConfig config)
         {
-            Nini.Config.IConfig config = GetConfig(source, "Doplnek");
+            base.Load(config);
+            //Nini.Config.IConfig config = GetConfig(source, "Doplnek");
             if (config != null)
             {
                 Cena = config.GetInt("Cena");
-                return false;
+                return EReturn.NoError;
             }
-            else return true;
+            else return EReturn.Error;
         }
-        public Nini.Config.IConfig GetConfig(Nini.Config.IConfigSource source, string nameConfig)
-        {
-            if (source.Configs[1].Name == nameConfig) return source.Configs[nameConfig];
-            else return null;
-        }
+        //public Nini.Config.IConfig GetConfig(Nini.Config.IConfigSource source, string nameConfig)
+        //{
+        //    if (source.Configs[1].Name == nameConfig) return source.Configs[nameConfig];
+        //    else return null;
+        //}
     }
 }

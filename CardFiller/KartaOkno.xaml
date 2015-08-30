@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="KartaOkno" Height="700" Width="300" xmlns:my="clr-namespace:CardFiller">
     <Grid>
-        <my:Karta x:Name="karta1" />
+        <my:ViewKarta x:Name="karta1" />
         <Button Content="Ok" Height="23" HorizontalAlignment="Left" Margin="0,0,0,0" Name="buttonOk" VerticalAlignment="Bottom" Width="75" IsDefault="True" Click="buttonOk_Click" />
     </Grid>
 </Window>

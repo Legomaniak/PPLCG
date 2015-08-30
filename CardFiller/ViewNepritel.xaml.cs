@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace CardFiller
 {
     /// <summary>
-    /// Interaction logic for Lokace.xaml
+    /// Interaction logic for Nepritel.xaml
     /// </summary>
-    public partial class Lokace : UserControl
+    public partial class ViewNepritel : UserControl
     {
-        public Lokace()
+        public ViewNepritel()
         {
             InitializeComponent();
         }
@@ -27,20 +27,18 @@ namespace CardFiller
         {
             myListControl1.data = stiny;
         }
-        public PPLCG.DataLokace GetData()
+        public PPLCG.DataNepritel GetData()
         {
-            return new PPLCG.DataLokace(myListControl1.GetSelected().ToArray(), int.Parse(boxZivoty.Text), int.Parse(boxUtok.Text), int.Parse(boxObrana.Text), int.Parse(boxOhrozeni.Text), int.Parse(boxStretnuti.Text), int.Parse(boxTeren.Text));
+            return new PPLCG.DataNepritel(myListControl1.GetSelected().ToArray(), int.Parse(boxZivoty.Text), int.Parse(boxUtok.Text), int.Parse(boxObrana.Text), int.Parse(boxOhrozeni.Text), int.Parse(boxStretnuti.Text));
         }
-        public void SetData(PPLCG.DataLokace karta)
+        public void SetData(PPLCG.DataNepritel karta)
         {
             boxObrana.Text = karta.Obrana.ToString();
             boxUtok.Text = karta.Utok.ToString();
             boxOhrozeni.Text = karta.Ohrozeni.ToString();
             boxStretnuti.Text = karta.Stretnuti.ToString();
             boxZivoty.Text = karta.Zivoty.ToString();
-            foreach (string s in karta.Stin)
-                myListControl1.Add(s);
-            boxTeren.Text = karta.Teren.ToString();
+            foreach (string s in karta.Stin) myListControl1.Add(s);
         }
     }
 }

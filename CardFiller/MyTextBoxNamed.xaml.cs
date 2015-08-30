@@ -15,21 +15,13 @@ using System.Windows.Shapes;
 namespace CardFiller
 {
     /// <summary>
-    /// Interaction logic for Udalost.xaml
+    /// Interaction logic for MyTextBoxNamed.xaml
     /// </summary>
-    public partial class Udalost : UserControl
+    public partial class MyTextBoxNamed : UserControl
     {
-        public Udalost()
+        public MyTextBoxNamed()
         {
             InitializeComponent();
-        }
-        public PPLCG.DataUdalost GetData()
-        {
-            return new PPLCG.DataUdalost(int.Parse(boxCena.Text));
-        }
-        public void SetData(PPLCG.DataUdalost karta)
-        {
-            boxCena.Text = karta.Cena.ToString();
         }
     }
 }

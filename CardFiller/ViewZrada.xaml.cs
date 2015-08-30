@@ -15,21 +15,26 @@ using System.Windows.Shapes;
 namespace CardFiller
 {
     /// <summary>
-    /// Interaction logic for Doplnek.xaml
+    /// Interaction logic for Zrada.xaml
     /// </summary>
-    public partial class Doplnek : UserControl
+    public partial class ViewZrada : UserControl
     {
-        public Doplnek()
+        public ViewZrada()
         {
             InitializeComponent();
         }
-        public PPLCG.DataDoplnek GetData()
+        public void Init(List<string> stiny)
         {
-            return new PPLCG.DataDoplnek();
+            myListControl1.data = stiny;
         }
-        public void SetData(PPLCG.DataDoplnek karta)
+        public void SetData(PPLCG.DataZrada karta)
         {
-            boxCena.Text = karta.Cena.ToString();
+            foreach (string s in karta.Stin)
+                myListControl1.Add(s);
+        }
+        public PPLCG.DataZrada GetData()
+        {
+            return new PPLCG.DataZrada(myListControl1.GetSelected().ToArray());
         }
     }
 }

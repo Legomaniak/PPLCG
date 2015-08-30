@@ -60,20 +60,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Doplnek.xaml.cs">
-      <DependentUpon>Doplnek.xaml</DependentUpon>
+    <Compile Include="MyTextBoxInt.cs" />
+    <Compile Include="MyTextBoxNamed.xaml.cs">
+      <DependentUpon>MyTextBoxNamed.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Hrdina.xaml.cs">
-      <DependentUpon>Hrdina.xaml</DependentUpon>
+    <Compile Include="ViewDoplnek.xaml.cs">
+      <DependentUpon>ViewDoplnek.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Karta.xaml.cs">
-      <DependentUpon>Karta.xaml</DependentUpon>
+    <Compile Include="ViewHrdina.xaml.cs">
+      <DependentUpon>ViewHrdina.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewKarta.xaml.cs">
+      <DependentUpon>ViewKarta.xaml</DependentUpon>
     </Compile>
     <Compile Include="KartaOkno.xaml.cs">
       <DependentUpon>KartaOkno.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Lokace.xaml.cs">
-      <DependentUpon>Lokace.xaml</DependentUpon>
+    <Compile Include="ViewLokace.xaml.cs">
+      <DependentUpon>ViewLokace.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyListControl.xaml.cs">
       <DependentUpon>MyListControl.xaml</DependentUpon>
@@ -81,27 +85,31 @@
     <Compile Include="MyListWindow.xaml.cs">
       <DependentUpon>MyListWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Nepritel.xaml.cs">
-      <DependentUpon>Nepritel.xaml</DependentUpon>
+    <Compile Include="ViewNepritel.xaml.cs">
+      <DependentUpon>ViewNepritel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Spojenec.xaml.cs">
-      <DependentUpon>Spojenec.xaml</DependentUpon>
+    <Compile Include="ViewSpojenec.xaml.cs">
+      <DependentUpon>ViewSpojenec.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Udalost.xaml.cs">
-      <DependentUpon>Udalost.xaml</DependentUpon>
+    <Compile Include="ViewUdalost.xaml.cs">
+      <DependentUpon>ViewUdalost.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Zrada.xaml.cs">
-      <DependentUpon>Zrada.xaml</DependentUpon>
+    <Compile Include="ViewZrada.xaml.cs">
+      <DependentUpon>ViewZrada.xaml</DependentUpon>
     </Compile>
-    <Page Include="Doplnek.xaml">
+    <Page Include="MyTextBoxNamed.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Hrdina.xaml">
+    <Page Include="ViewDoplnek.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Karta.xaml">
+    <Page Include="ViewHrdina.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ViewKarta.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -109,7 +117,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Lokace.xaml">
+    <Page Include="ViewLokace.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -133,19 +141,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Nepritel.xaml">
+    <Page Include="ViewNepritel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Spojenec.xaml">
+    <Page Include="ViewSpojenec.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Udalost.xaml">
+    <Page Include="ViewUdalost.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Zrada.xaml">
+    <Page Include="ViewZrada.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

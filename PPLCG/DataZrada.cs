@@ -5,45 +5,47 @@ using System.Text;
 
 namespace PPLCG
 {
-    public class DataZrada
+    public class DataZrada:DataKarta
     {
-        public string[] Stin;
+        public string[] Stin
+        {
+            get { return _Stin; }
+            set { _Stin = value; OnPropertyChanged("Stin"); }
+        }
+        string[] _Stin;
         public DataZrada()
         {
             Stin = new string[1] { "None" };
         }
-        public DataZrada(string[] stin)
+        public DataZrada(DataKarta dk, string[] stin) : base(dk)
         {
             Stin = stin;
         }
-        public bool Save(Nini.Config.IConfigSource source)
+        public override EReturn Save(Nini.Config.IConfig config)
         {
-            Nini.Config.IConfig config = source.AddConfig("Zrada");
+            base.Save(config);
+            //Nini.Config.IConfig config = source.AddConfig("Zrada");
             if (config != null)
             {
                 string s = "";
                 foreach (string ss in Stin) if (s == "") s = ss;
                     else s = s + "," + ss;
                 config.Set("Stin", s);
-                return false;
+                return EReturn.NoError;
             }
-            else return true;
+            else return EReturn.Error;
         }
-        public bool Load(Nini.Config.IConfigSource source)
+        public override EReturn Load(Nini.Config.IConfig config)
         {
-            Nini.Config.IConfig config = GetConfig(source, "Zrada");
+            base.Load(config);
+            //Nini.Config.IConfig config = GetConfig(source, "Zrada");
             if (config != null)
             {
                 string s = config.GetString("Stin");
                 string[] Stin = s.Split(',');
-                return false;
+                return EReturn.NoError;
             }
-            else return true;
-        }
-        public Nini.Config.IConfig GetConfig(Nini.Config.IConfigSource source, string nameConfig)
-        {
-            if (source.Configs[1].Name == nameConfig) return source.Configs[nameConfig];
-            else return null;
+            else return EReturn.Error;
         }
     }
 }

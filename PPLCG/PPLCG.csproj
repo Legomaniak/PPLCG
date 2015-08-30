@@ -59,6 +59,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ANotifer.cs" />
     <Compile Include="Citace.cs" />
     <Compile Include="DataDoplnek.cs" />
     <Compile Include="DataHrdina.cs" />
@@ -66,9 +67,9 @@
     <Compile Include="DataNepritel.cs" />
     <Compile Include="DataUdalost.cs" />
     <Compile Include="DataZrada.cs" />
+    <Compile Include="EReturn.cs" />
     <Compile Include="Faze.cs" />
-    <Compile Include="IKarta.cs" />
-    <Compile Include="Karty.cs" />
+    <Compile Include="ISaveLoad.cs" />
     <Compile Include="NazevAkce.cs" />
     <Compile Include="Reakce.cs" />
     <Compile Include="DataSpojenec.cs" />

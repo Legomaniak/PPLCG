@@ -5,7 +5,7 @@ using System.Text;
 
 namespace PPLCG
 {
-    public enum Typy
+    public enum ETypy
     {
         Spojenec, Doplnek, Udalost, Lokace, Zrada, Nepritel, Hrdina
     }

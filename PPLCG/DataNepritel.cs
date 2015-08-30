@@ -5,14 +5,44 @@ using System.Text;
 
 namespace PPLCG
 {
-    public class DataNepritel
+    public class DataNepritel:DataKarta
     {
-        public int Ohrozeni;
-        public int Stretnuti;
-        public string[] Stin;
-        public int Utok;
-        public int Obrana;
-        public int Zivoty;
+        public int Ohrozeni
+        {
+            get { return _Ohrozeni; }
+            set { _Ohrozeni = value; OnPropertyChanged("Ohrozeni"); }
+        }
+        int _Ohrozeni = 0;
+        public int Stretnuti
+        {
+            get { return _Stretnuti; }
+            set { _Stretnuti = value; OnPropertyChanged("Stretnuti"); }
+        }
+        int _Stretnuti = 0;
+        public string[] Stin
+        {
+            get { return _Stin; }
+            set { _Stin = value; OnPropertyChanged("Stin"); }
+        }
+        string[] _Stin;
+        public int Utok
+        {
+            get { return _Utok; }
+            set { _Utok = value; OnPropertyChanged("Utok"); }
+        }
+        int _Utok = 0;
+        public int Obrana
+        {
+            get { return _Obrana; }
+            set { _Obrana = value; OnPropertyChanged("Obrana"); }
+        }
+        int _Obrana = 0;
+        public int Zivoty
+        {
+            get { return _Zivoty; }
+            set { _Zivoty = value; OnPropertyChanged("Zivoty"); }
+        }
+        int _Zivoty = 0;
         public DataNepritel()
         {
              Ohrozeni = 0;
@@ -22,7 +52,7 @@ namespace PPLCG
              Zivoty = 0;
              Stin = new string[1] { "None" };
         }
-        public DataNepritel(string[] stin, int zivoty, int utok, int obrana, int ohrozeni, int stretnuti)
+        public DataNepritel(DataKarta dk, string[] stin, int zivoty, int utok, int obrana, int ohrozeni, int stretnuti) : base(dk)
         {
             Ohrozeni = ohrozeni;
             Utok = utok;
@@ -31,9 +61,10 @@ namespace PPLCG
             Stin = stin;
             Stretnuti = stretnuti;
         }
-        public bool Save(Nini.Config.IConfigSource source)
+        public override EReturn Save(Nini.Config.IConfig config)
         {
-            Nini.Config.IConfig config = source.AddConfig("Nepritel");
+            base.Save(config);
+            //Nini.Config.IConfig config = source.AddConfig("Nepritel");
             if (config != null)
             {
                 config.Set("Ohrozeni", Ohrozeni);
@@ -45,13 +76,14 @@ namespace PPLCG
                 foreach (string ss in Stin) if (s == "") s = ss;
                     else s = s + "," + ss;
                 config.Set("Stiny", s);
-                return false;
+                return EReturn.NoError;
             }
-            else return true;
+            else return EReturn.Error;
         }
-        public bool Load(Nini.Config.IConfigSource source)
+        public override EReturn Load(Nini.Config.IConfig config)
         {
-            Nini.Config.IConfig config = GetConfig(source, "Nepritel");
+            base.Load(config);
+            //Nini.Config.IConfig config = GetConfig(source, "Nepritel");
             if (config != null)
             {
                 Ohrozeni = config.GetInt("Ohrozeni");
@@ -61,14 +93,9 @@ namespace PPLCG
                 Zivoty = config.GetInt("Zivoty");
                 string s = config.GetString("Stiny");
                 string[] Stin = s.Split(',');
-                return false;
+                return EReturn.NoError;
             }
-            else return true;
-        }
-        public Nini.Config.IConfig GetConfig(Nini.Config.IConfigSource source, string nameConfig)
-        {
-            if (source.Configs[1].Name == nameConfig) return source.Configs[nameConfig];
-            else return null;
+            else return EReturn.Error;
         }
     }
 }

@@ -6,10 +6,10 @@ using Nini.Config;
 
 namespace PPLCG
 {
-    public class Citace
+    public class Citace:ISaveLoad
     {
-        public string Text;
-        public string Autor;
+        public string Text = "";
+        public string Autor = "";
         public Citace()
         {
             Text = "Nevim.";
@@ -21,26 +21,26 @@ namespace PPLCG
             Autor = autor;
         }
 
-        public bool Save(IConfig config)
+        public EReturn Save(IConfig config)
         {
             if (config != null)
             {
                 config.Set("Text", Text);
                 config.Set("Autor", Autor);
-                return false;
+                return EReturn.NoError;
             }
-            else return true;
+            else return EReturn.Error;
         }
 
-        public bool Load(IConfig config)
+        public EReturn Load(IConfig config)
         {
             if (config != null)
             {
                 Text = config.GetString("Text");
                 Autor = config.GetString("Autor");
-                return false;
+                return EReturn.NoError;
             }
-            else return true;
+            else return EReturn.Error;
         }
     }
 }

@@ -11,28 +11,29 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PPLCG;
 
 namespace CardFiller
 {
     /// <summary>
-    /// Interaction logic for Hrdina.xaml
+    /// Interaction logic for Spojenec.xaml
     /// </summary>
-    public partial class Hrdina : UserControl
+    public partial class ViewSpojenec : UserControl
     {
-        public Hrdina()
+        public ViewSpojenec()
         {
             InitializeComponent();
         }
-        public PPLCG.DataHrdina GetData()
+        public PPLCG.DataSpojenec GetData()
         {
-            return new PPLCG.DataHrdina(int.Parse(boxZivoty.Text), int.Parse(boxUtok.Text), int.Parse(boxObrana.Text), int.Parse(boxVule.Text), int.Parse(boxHrozba.Text));
+            return new PPLCG.DataSpojenec(int.Parse(boxZivoty.Text), int.Parse(boxUtok.Text), int.Parse(boxObrana.Text), int.Parse(boxVule.Text), int.Parse(boxZdroje.Text));
         }
-        public void SetData(PPLCG.DataHrdina karta)
+        public void SetData(PPLCG.DataSpojenec karta)
         {
             boxObrana.Text = karta.Obrana.ToString();
             boxUtok.Text = karta.Utok.ToString();
             boxVule.Text = karta.Vule.ToString();
-            boxHrozba.Text = karta.Hrozba.ToString();
+            boxZdroje.Text = karta.Zdroje.ToString();
             boxZivoty.Text = karta.Zivoty.ToString();
         }
     }

@@ -17,17 +17,17 @@ namespace CardFiller
     /// <summary>
     /// Interaction logic for Karta.xaml
     /// </summary>
-    public partial class Karta : UserControl
+    public partial class ViewKarta : UserControl
     {
-        public Karta()
+        public ViewKarta()
         {
             InitializeComponent();
-            foreach (string s in Enum.GetNames(typeof(PPLCG.Typy)))
+            foreach (string s in Enum.GetNames(typeof(PPLCG.ETypy)))
             {
                 boxTyp.Items.Add(s);
             }
             boxTyp.SelectedIndex = 0;
-            foreach (string s in Enum.GetNames(typeof(PPLCG.Sfery)))
+            foreach (string s in Enum.GetNames(typeof(PPLCG.ESfery)))
             {
                 boxSfera.Items.Add(s);
             }
@@ -41,23 +41,23 @@ namespace CardFiller
         }
         public PPLCG.IKarta GetKarta()
         {
-           PPLCG.DataKarta dataKarta = new PPLCG.DataKarta(boxId.Text, boxJmeno.Text, boxPopis.Text, (PPLCG.Sfery)boxSfera.SelectedIndex, (PPLCG.Typy)boxTyp.SelectedIndex, boxKvalita.IsChecked.Value, myListControl1.GetSelected().ToArray(), (string)boxDruh.Text, new PPLCG.Citace(boxCitace.Text, boxAutor.Text));
+           PPLCG.DataKarta dataKarta = new PPLCG.DataKarta(boxId.Text, boxJmeno.Text, boxPopis.Text, (PPLCG.ESfery)boxSfera.SelectedIndex, (PPLCG.ETypy)boxTyp.SelectedIndex, boxKvalita.IsChecked.Value, myListControl1.GetSelected().ToArray(), (string)boxDruh.Text, new PPLCG.Citace(boxCitace.Text, boxAutor.Text));
            PPLCG.IKarta karta = null;
            switch (dataKarta.Typ)
            {
-               case PPLCG.Typy.Doplnek: karta = new PPLCG.KartaDoplnek() { Karta = dataKarta, Doplnek = (grid1.Children[0] as Doplnek).GetData() };
+               case PPLCG.ETypy.Doplnek: karta = new PPLCG.KartaDoplnek() { Karta = dataKarta, Doplnek = (grid1.Children[0] as ViewDoplnek).GetData() };
                    break;
-               case PPLCG.Typy.Hrdina: karta = new PPLCG.KartaHrdina() { Karta = dataKarta, Hrdina = (grid1.Children[0] as Hrdina).GetData() };
+               case PPLCG.ETypy.Hrdina: karta = new PPLCG.KartaHrdina() { Karta = dataKarta, Hrdina = (grid1.Children[0] as ViewHrdina).GetData() };
                    break;
-               case PPLCG.Typy.Lokace: karta = new PPLCG.KartaLokace() { Karta = dataKarta, Lokace = (grid1.Children[0] as Lokace).GetData() };
+               case PPLCG.ETypy.Lokace: karta = new PPLCG.KartaLokace() { Karta = dataKarta, Lokace = (grid1.Children[0] as ViewLokace).GetData() };
                    break;
-               case PPLCG.Typy.Nepritel: karta = new PPLCG.KartaNepritel() { Karta = dataKarta, Nepritel = (grid1.Children[0] as Nepritel).GetData() };
+               case PPLCG.ETypy.Nepritel: karta = new PPLCG.KartaNepritel() { Karta = dataKarta, Nepritel = (grid1.Children[0] as ViewNepritel).GetData() };
                    break;
-               case PPLCG.Typy.Spojenec: karta = new PPLCG.KartaSpojenec() { Karta = dataKarta, Spojenec = (grid1.Children[0] as Spojenec).GetData() };
+               case PPLCG.ETypy.Spojenec: karta = new PPLCG.KartaSpojenec() { Karta = dataKarta, Spojenec = (grid1.Children[0] as ViewSpojenec).GetData() };
                    break;
-               case PPLCG.Typy.Udalost: karta = new PPLCG.KartaUdalost() { Karta = dataKarta, Udalost = (grid1.Children[0] as Udalost).GetData() };
+               case PPLCG.ETypy.Udalost: karta = new PPLCG.KartaUdalost() { Karta = dataKarta, Udalost = (grid1.Children[0] as ViewUdalost).GetData() };
                    break;
-               case PPLCG.Typy.Zrada: karta = new PPLCG.KartaZrada() { Karta = dataKarta, Zrada = (grid1.Children[0] as Zrada).GetData() };
+               case PPLCG.ETypy.Zrada: karta = new PPLCG.KartaZrada() { Karta = dataKarta, Zrada = (grid1.Children[0] as ViewZrada).GetData() };
                    break;
            }
 
@@ -83,19 +83,19 @@ namespace CardFiller
 
                 switch (karta.Karta.Typ)
                 {
-                    case PPLCG.Typy.Doplnek: (grid1.Children[0] as Doplnek).SetData((karta as PPLCG.KartaDoplnek).Doplnek); 
+                    case PPLCG.ETypy.Doplnek: (grid1.Children[0] as ViewDoplnek).SetData((karta as PPLCG.KartaDoplnek).Doplnek); 
                         break;
-                    case PPLCG.Typy.Hrdina: (grid1.Children[0] as Hrdina).SetData((karta as PPLCG.KartaHrdina).Hrdina); 
+                    case PPLCG.ETypy.Hrdina: (grid1.Children[0] as ViewHrdina).SetData((karta as PPLCG.KartaHrdina).Hrdina); 
                         break;
-                    case PPLCG.Typy.Lokace: (grid1.Children[0] as Lokace).SetData((karta as PPLCG.KartaLokace).Lokace); 
+                    case PPLCG.ETypy.Lokace: (grid1.Children[0] as ViewLokace).SetData((karta as PPLCG.KartaLokace).Lokace); 
                         break;
-                    case PPLCG.Typy.Nepritel: (grid1.Children[0] as Nepritel).SetData((karta as PPLCG.KartaNepritel).Nepritel); 
+                    case PPLCG.ETypy.Nepritel: (grid1.Children[0] as ViewNepritel).SetData((karta as PPLCG.KartaNepritel).Nepritel); 
                         break;
-                    case PPLCG.Typy.Spojenec: (grid1.Children[0] as Spojenec).SetData((karta as PPLCG.KartaSpojenec).Spojenec); 
+                    case PPLCG.ETypy.Spojenec: (grid1.Children[0] as ViewSpojenec).SetData((karta as PPLCG.KartaSpojenec).Spojenec); 
                         break;
-                    case PPLCG.Typy.Udalost: (grid1.Children[0] as Udalost).SetData((karta as PPLCG.KartaUdalost).Udalost); 
+                    case PPLCG.ETypy.Udalost: (grid1.Children[0] as ViewUdalost).SetData((karta as PPLCG.KartaUdalost).Udalost); 
                         break;
-                    case PPLCG.Typy.Zrada: (grid1.Children[0] as Zrada).SetData((karta as PPLCG.KartaZrada).Zrada); 
+                    case PPLCG.ETypy.Zrada: (grid1.Children[0] as ViewZrada).SetData((karta as PPLCG.KartaZrada).Zrada); 
                         break;
                 }
         }
@@ -107,31 +107,31 @@ namespace CardFiller
             switch (boxTyp.SelectedIndex)
             {
                 case 0:
-                    grid1.Children.Add(new Spojenec());
+                    grid1.Children.Add(new ViewSpojenec());
                     break;
                 case 1:
-                    grid1.Children.Add(new Doplnek());
+                    grid1.Children.Add(new ViewDoplnek());
                     break;
                 case 2:
-                    grid1.Children.Add(new Udalost());
+                    grid1.Children.Add(new ViewUdalost());
                     break;
                 case 3:
-                    Lokace l = new Lokace();
+                    ViewLokace l = new ViewLokace();
                     l.Init(stiny);
                     grid1.Children.Add(l);
                     break;
                 case 4:
-                    Zrada z = new Zrada();
+                    ViewZrada z = new ViewZrada();
                     z.Init(stiny);
                     grid1.Children.Add(z);
                     break;
                 case 5:
-                    Nepritel n = new Nepritel();
+                    ViewNepritel n = new ViewNepritel();
                     n.Init(stiny);
                     grid1.Children.Add(n);
                     break;
                 case 6:
-                    grid1.Children.Add(new Hrdina());
+                    grid1.Children.Add(new ViewHrdina());
                     break;
             }
         }

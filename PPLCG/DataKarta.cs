@@ -6,31 +6,106 @@ using Nini.Config;
 
 namespace PPLCG
 {
-    public class DataKarta
+    public class DataKarta : ANotifer, ISaveLoad
     {
-        public string Id;
-        public string Jmeno;
-        public string Popis;
-        public Citace Citace;
-        public Sfery Sfera;
-        public Typy Typ;
-        public bool Kvalita;
-        public string[] Reakce;
-        public string Druh;
-        public bool IsValid = false;
+        public string Id
+        {
+            get { return _Id; }
+            set { _Id = value; OnPropertyChanged("Id"); }
+        }
+        string _Id = "";
+        public string Jmeno
+        {
+            get { return _Jmeno; }
+            set { _Jmeno = value; OnPropertyChanged("Jmeno"); }
+        }
+        string _Jmeno = "";
+        public string Popis
+        {
+            get { return _Popis; }
+            set { _Popis = value; OnPropertyChanged("Popis"); }
+        }
+        string _Popis = "";
+        public string Text
+        {
+            get { return _Text; }
+            set { _Text = value; OnPropertyChanged("Text"); }
+        }
+        string _Text = "";
+        public string Autor
+        {
+            get { return _Autor; }
+            set { _Autor = value; OnPropertyChanged("Autor"); }
+        }
+        string _Autor = "";
+        public ESfery Sfera
+        {
+            get { return _ASfera; }
+            set
+            {
+                _ASfera = value; OnPropertyChanged("Sfera");
+            }
+        }
+        ESfery _ASfera = ESfery.Neutralni;
+        public ETypy Typ
+        {
+            get { return _Typ; }
+            set
+            {
+                _Typ = value; OnPropertyChanged("Typ");
+            }
+        }
+        ETypy _Typ = ETypy.Hrdina;
+        public bool Kvalita
+        {
+            get { return _Kvalita; }
+            set
+            {
+                _Kvalita = value; OnPropertyChanged("Kvalita");
+            }
+        }
+        bool _Kvalita = false;
+        public string[] Reakce
+        {
+            get { return _Reakce; }
+            set
+            {
+                _Reakce = value; OnPropertyChanged("Reakce");
+            }
+        }
+        string[] _Reakce;
+        public string Druh
+        {
+            get { return _Druh; }
+            set
+            {
+                _Druh = value; OnPropertyChanged("Druh");
+            }
+        }
+        string _Druh = "";
+        public bool IsValid
+        {
+            get { return _IsValid; }
+            set
+            {
+                _IsValid = value; OnPropertyChanged("IsValid");
+            }
+        }
+        bool _IsValid = false;
         public DataKarta()
         {
             Id = "K0";
             Jmeno = "Karta";
             Popis = "Prazdná karta";
-            Sfera = Sfery.Neutralni;
-            Typ = Typy.Spojenec;
+            Sfera = ESfery.Neutralni;
+            Typ = ETypy.Spojenec;
             Kvalita = false;
             Reakce = new string[1] { "None" };
             Druh = "None";
-            Citace = new Citace();
+            Text = "Nevim.";
+            Autor = "Nikdo";
         }
-        public DataKarta(string id, string jmeno, string popis, Sfery sfera, Typy typ, bool kvalita, string[] reakce, string druh, Citace citace)
+        public DataKarta(string id, string jmeno, string popis, ESfery sfera, ETypy typ, bool kvalita, string[] reakce, string druh, string text, string autor)
         {
             Id = id;
             Jmeno = jmeno;
@@ -40,11 +115,25 @@ namespace PPLCG
             Kvalita = kvalita;
             Reakce = reakce;
             Druh = druh;
-            Citace = citace;
+            Text = text;
+            Autor = autor;
         }
-        public bool Save(IConfigSource source)
+        public DataKarta(DataKarta DK)
         {
-            IConfig config = source.AddConfig("Karta");
+            Id = DK.Id;
+            Jmeno = DK.Jmeno;
+            Popis = DK.Popis;
+            Sfera = DK.Sfera;
+            Typ = DK.Typ;
+            Kvalita = DK.Kvalita;
+            Reakce = DK.Reakce;
+            Druh = DK.Druh;
+            Text = DK.Text;
+            Autor = DK.Autor;
+        }
+        public virtual EReturn Save(IConfig config)
+        {
+            //IConfig config = source.AddConfig("Karta");
             if (config != null)
             {
                 config.Set("ID", Id);
@@ -53,36 +142,40 @@ namespace PPLCG
                 config.Set("Sfera", (int)Sfera);
                 config.Set("Typ", (int)Typ);
                 config.Set("Druh", Druh);
-                if (Citace.Save(config)) Console.WriteLine("Error save citace");
                 string s = "";
-                foreach (string ss in Reakce) if(s=="") s = ss;
+                foreach (string ss in Reakce)
+                    if (s == "") s = ss;
                     else s = s + "," + ss;
                 config.Set("Reakce", s);
-                return false;
+                config.Set("Text", Text);
+                config.Set("Autor", Autor);
+                return EReturn.NoError;
             }
-            else return true;
+            else return EReturn.Error;
         }
-        public bool Load(IConfigSource source)
-        {            
-            IConfig config = GetConfig(source, "Karta");
+        public virtual EReturn Load(IConfig config)
+        {
+            //IConfig config = GetConfig(source, "Karta");
             if (config != null)
             {
                 Id = config.GetString("ID");
                 Jmeno = config.GetString("Jmeno");
                 Popis = config.GetString("Popis");
-                Sfera = (Sfery)config.GetInt("Sfera");
-                Typ = (Typy)config.GetInt("Typ");
+                Sfera = (ESfery)config.GetInt("Sfera");
+                Typ = (ETypy)config.GetInt("Typ");
                 Popis = config.GetString("Druh");
                 string s = config.GetString("Reakce");
                 string[] Reakce = s.Split(',');
-                return false;
+                Text = config.GetString("Text");
+                Autor = config.GetString("Autor");
+                return EReturn.NoError;
             }
-            else return true;
+            else return EReturn.Error;
         }
-        public IConfig GetConfig(IConfigSource source, string nameConfig)
-        {
-            if (source.Configs[0].Name == nameConfig) return source.Configs[nameConfig];
-            else return null;
-        }
+        //public IConfig GetConfig(IConfigSource source, string nameConfig)
+        //{
+        //    if (source.Configs[0].Name == nameConfig) return source.Configs[nameConfig];
+        //    else return null;
+        //}
     }
 }
