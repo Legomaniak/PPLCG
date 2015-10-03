@@ -23,47 +23,35 @@ namespace CardFiller
         {
             InitializeComponent();
         }
-        public List<string> data 
-    {
-        get { return _data; }
-        set
+        List<PPLCG.MyString> MyList;
+        public void Init(List<PPLCG.MyString> myList)
         {
-            _data = value;
-            stackPanel1.Children.Clear();
-            Add();
-        }
-    }
-        List<string> _data = new List<string>();
-        public void Add(object sender, RoutedEventArgs e)
-        {
-            Add();
-        }
-        public void Add()
-        {
-            ComboBox cb = new ComboBox();
-            cb.IsEditable = true;
-            foreach (string s in data) cb.Items.Add(s);
-            stackPanel1.Children.Add(cb);
-        }
-        public void Add(string s)
-        {
-            ComboBox cb = new ComboBox();
-            cb.IsEditable = true;
-            cb.Items.Add(s);
-            foreach (string ss in data) cb.Items.Add(ss);
-            cb.SelectedIndex = 0;
-            stackPanel1.Children.Add(cb);
+            MyList = myList;
+            foreach(PPLCG.MyString ms in MyList)
+            {
+                MyString myString = new MyString();
+                myString.Init(ms);
+                stackPanel1.Children.Add(myString);
+            }
         }
 
-        private void Rmove(object sender, RoutedEventArgs e)
+        private void Remove(object sender, RoutedEventArgs e)
         {
-            if (stackPanel1.Children.Count > 0) stackPanel1.Children.Remove(stackPanel1.Children[stackPanel1.Children.Count - 1]);
+            if (MyList == null) return;
+            int index = stackPanel1.Children.Count - 1;
+            stackPanel1.Children.RemoveAt(index);
+            MyList.RemoveAt(index);
+
         }
-        public List<string> GetSelected()
+
+        private void Add(object sender, RoutedEventArgs e)
         {
-            List<string> ret = new List<string>();
-            foreach (ComboBox cb in stackPanel1.Children) if (cb.Text != null) ret.Add(cb.Text);
-            return ret;
+            if (MyList == null) return;
+            PPLCG.MyString ms = new PPLCG.MyString();
+            MyList.Add(ms);
+            MyString myString = new MyString();
+            myString.Init(ms);
+            stackPanel1.Children.Add(myString);
         }
     }
 }

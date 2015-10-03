@@ -15,13 +15,20 @@ using System.Windows.Shapes;
 namespace CardFiller
 {
     /// <summary>
-    /// Interaction logic for MyTextBoxNamed.xaml
+    /// Interaction logic for MyString.xaml
     /// </summary>
-    public partial class MyTextBoxNamed : UserControl
+    public partial class MyString : UserControl
     {
-        public MyTextBoxNamed()
+        public MyString()
         {
             InitializeComponent();
+        }
+        public void Init(PPLCG.MyString ms)
+        {
+            Binding myBinding = new Binding("String");
+            myBinding.Mode = BindingMode.TwoWay;
+            myBinding.Source = ms;
+            text.SetBinding(TextBox.TextProperty, myBinding);
         }
     }
 }

@@ -19,12 +19,12 @@ namespace PPLCG
             set { _Stretnuti = value; OnPropertyChanged("Stretnuti"); }
         }
         int _Stretnuti = 0;
-        public string[] Stin
+        public List<MyString> Stin
         {
             get { return _Stin; }
             set { _Stin = value; OnPropertyChanged("Stin"); }
         }
-        string[] _Stin;
+        List<MyString> _Stin;
         public int Utok
         {
             get { return _Utok; }
@@ -51,15 +51,16 @@ namespace PPLCG
         int _Teren = 0;
         public DataLokace()
         {
-             Ohrozeni = 0;
-             Stretnuti = 0;
-             Utok = 0;
-             Obrana = 0;
-             Zivoty = 0;
-             Teren = 0;
-             Stin = new string[1] { "None" };
+            Ohrozeni = 0;
+            Stretnuti = 0;
+            Utok = 0;
+            Obrana = 0;
+            Zivoty = 0;
+            Teren = 0;
+            Stin = new List<MyString>();
+            Typ = ETypy.Lokace;
         }
-        public DataLokace(DataKarta dk, string[] stin, int zivoty, int utok, int obrana, int ohrozeni, int stretnuti, int teren) : base(dk)
+        public DataLokace(DataKarta dk, List<MyString> stin, int zivoty, int utok, int obrana, int ohrozeni, int stretnuti, int teren) : base(dk)
         {
             Ohrozeni = ohrozeni;
             Utok = utok;
@@ -82,8 +83,9 @@ namespace PPLCG
                 config.Set("Zivoty", Zivoty);
                 config.Set("Teren", Teren);
                 string s = "";
-                foreach (string ss in Stin) if (s == "") s = ss;
-                    else s = s + "," + ss;
+                foreach (MyString ss in Stin)
+                    if (s == "") s = ss.String;
+                    else s = s + "," + ss.String;
                 config.Set("Stiny", s);
                 return EReturn.NoError;
             }
@@ -102,7 +104,15 @@ namespace PPLCG
                 Zivoty = config.GetInt("Zivoty");
                 Teren = config.GetInt("Teren");
                 string s = config.GetString("Stiny");
-                string[] Stin = s.Split(',');
+                string[] stin = s.Split(',');
+                List<MyString> mujList = new List<MyString>();
+                foreach (string ss in stin)
+                {
+                    MyString ms = new MyString();
+                    ms.String = ss;
+                    mujList.Add(ms);
+                }
+                Stin = mujList;
                 return EReturn.NoError;
             }
             else return EReturn.Error;

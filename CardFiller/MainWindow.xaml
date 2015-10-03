@@ -4,25 +4,30 @@
         Title="MainWindow" Height="350" Width="500" xmlns:my="clr-namespace:CardFiller">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25" />
-            <RowDefinition Height="289*" />
+            <RowDefinition Height="283*"/>
+            <RowDefinition Height="36*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100*" />
-            <ColumnDefinition Width="70" />
-            <ColumnDefinition Width="100*" />
-            <ColumnDefinition Width="100*" />
-            <ColumnDefinition Width="100*" />
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        <StackPanel Name="stackPanelTlacitka" CanHorizontallyScroll="True" Grid.Column="1" Grid.Row="1" />
-        <ListBox  Name="listBox1" Grid.Row="1" />
-        <ListBox Grid.Column="2" Name="listBoxReakce" Grid.Row="1" />
-        <ListBox Grid.Column="3" Name="listBoxStiny" Grid.Row="1" />
-        <ListBox Grid.Column="4" Name="listBoxDruhy" Grid.Row="1" />
-        <Label Content="Karty" Margin="0,-4,0,0" Name="Label1" HorizontalContentAlignment="Center" />
-        <Label Content="Možnosti" Margin="0,-4,0,0" Name="Label2" Grid.Column="1" HorizontalContentAlignment="Center" />
-        <Label Content="Reakce" Margin="0,-4,0,0" Name="Label3" Grid.Column="2" HorizontalContentAlignment="Center" />
-        <Label Content="Stíny" Margin="0,-4,0,0" Name="Label4" Grid.Column="3" HorizontalContentAlignment="Center" />
-        <Label Content="Druhy" Margin="0,-4,0,0" Name="Label5" Grid.Column="4" HorizontalContentAlignment="Center" />
+        <GroupBox Header="Karty" Margin="0,0,0,5">
+            <ListBox  Name="listBox1" Grid.ColumnSpan="2" SelectionChanged="listBox1_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+        </GroupBox>
+        <GroupBox Header="Karta" x:Name="panelKarta" Grid.Column="1"/>
+        <StackPanel  Grid.Row="1" Grid.ColumnSpan="2" Orientation="Horizontal">
+            <Viewbox>
+        <Button x:Name="buttonAdd" Content="Add" Click="NovaKarta"/>
+            </Viewbox>
+            <Viewbox>
+            <Button x:Name="buttonRem" Content="Rem" Click="DelKartu" Grid.Row="1"/>
+            </Viewbox>
+            <Viewbox>
+                <Button x:Name="buttonSave" Content="Save" Click="SaveKarty" Grid.Row="1"/>
+            </Viewbox>
+            <Viewbox>
+                <Button x:Name="buttonAct" Content="Act" Click="ActKarty" Grid.Row="1"/>
+            </Viewbox>
+        </StackPanel>
     </Grid>
 </Window>

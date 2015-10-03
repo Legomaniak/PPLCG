@@ -7,17 +7,18 @@ namespace PPLCG
 {
     public class DataZrada:DataKarta
     {
-        public string[] Stin
+        public List<MyString> Stin
         {
             get { return _Stin; }
             set { _Stin = value; OnPropertyChanged("Stin"); }
         }
-        string[] _Stin;
+        List<MyString> _Stin;
         public DataZrada()
         {
-            Stin = new string[1] { "None" };
+            Stin = new List<MyString>();
+            Typ = ETypy.Zrada;
         }
-        public DataZrada(DataKarta dk, string[] stin) : base(dk)
+        public DataZrada(DataKarta dk, List<MyString> stin) : base(dk)
         {
             Stin = stin;
         }
@@ -28,8 +29,9 @@ namespace PPLCG
             if (config != null)
             {
                 string s = "";
-                foreach (string ss in Stin) if (s == "") s = ss;
-                    else s = s + "," + ss;
+                foreach (MyString ss in Stin)
+                    if (s == "") s = ss.String;
+                    else s = s + "," + ss.String;
                 config.Set("Stin", s);
                 return EReturn.NoError;
             }
@@ -42,7 +44,15 @@ namespace PPLCG
             if (config != null)
             {
                 string s = config.GetString("Stin");
-                string[] Stin = s.Split(',');
+                string[] stin = s.Split(',');
+                List<MyString> mujList = new List<MyString>();
+                foreach (string ss in stin)
+                {
+                    MyString ms = new MyString();
+                    ms.String = ss;
+                    mujList.Add(ms);
+                }
+                Stin = mujList;
                 return EReturn.NoError;
             }
             else return EReturn.Error;

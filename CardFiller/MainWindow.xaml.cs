@@ -23,113 +23,41 @@ namespace CardFiller
         public MainWindow()
         {
             InitializeComponent();
+            if (Properties.Settings.Default.LokaceKaret == null || Properties.Settings.Default.LokaceKaret == "")
+            {
+                System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
+                if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                {
+                    Properties.Settings.Default.LokaceKaret = fbd.SelectedPath;
+                    Properties.Settings.Default.Save();
+                }
+                else Close();
+            }
+            LoadKarty(Properties.Settings.Default.LokaceKaret);
 
-            Button tlacitko = new Button()
-            {
-                Content = "Nová karta",
-            };
-            tlacitko.Click += new RoutedEventHandler(NovaKarta);
-            stackPanelTlacitka.Children.Add(tlacitko);
-            tlacitko = new Button()
-            {
-                Content = "Uprav kartu",
-            };
-            tlacitko.Click += new RoutedEventHandler(UpravKartu);
-            stackPanelTlacitka.Children.Add(tlacitko);
-            tlacitko = new Button()
-            {
-                Content = "Smaž kartu",
-            };
-            tlacitko.Click += new RoutedEventHandler(DelKartu); 
-            stackPanelTlacitka.Children.Add(tlacitko);
-            tlacitko = new Button()
-            {
-                Content = "Gen akce",
-            };
-            tlacitko.Click += new RoutedEventHandler(NewAkce);
-            stackPanelTlacitka.Children.Add(tlacitko); 
-            tlacitko = new Button()
-            {
-                Content = "Gen stíny",
-            };
-            tlacitko.Click += new RoutedEventHandler(NewStiny);
-            stackPanelTlacitka.Children.Add(tlacitko);
-            tlacitko = new Button()
-            {
-                Content = "Gen druhy",
-            };
-            tlacitko.Click += new RoutedEventHandler(NewDruhy);
-            stackPanelTlacitka.Children.Add(tlacitko);
-            tlacitko = new Button()
-            {
-                Content = "Přidej akci",
-            };
-            tlacitko.Click += new RoutedEventHandler(AddAkce);
-            stackPanelTlacitka.Children.Add(tlacitko);
-            tlacitko = new Button()
-            {
-                Content = "Smaž akci",
-            };
-            tlacitko.Click += new RoutedEventHandler(DelAkce);
-            stackPanelTlacitka.Children.Add(tlacitko);
-            tlacitko = new Button()
-            {
-                Content = "Smaž stín",
-            };
-            tlacitko.Click += new RoutedEventHandler(DelStin);
-            stackPanelTlacitka.Children.Add(tlacitko);
-            tlacitko = new Button()
-            {
-                Content = "Smaž druh",
-            };
-            tlacitko.Click += new RoutedEventHandler(DelDruh);
-            stackPanelTlacitka.Children.Add(tlacitko);
-            tlacitko = new Button()
-            {
-                Content = "Nahraj karty",
-            };
-            tlacitko.Click += new RoutedEventHandler(LoadKarty);
-            stackPanelTlacitka.Children.Add(tlacitko);
-            tlacitko = new Button()
-            {
-                Content = "Ulož karty",
-            };
-            tlacitko.Click += new RoutedEventHandler(SaveKarty);
-            stackPanelTlacitka.Children.Add(tlacitko);
         }
-        List<PPLCG.IKarta> Karty = new List<PPLCG.IKarta>();
-        List<PPLCG.Druhy> ListDruhy = new List<PPLCG.Druhy>();
-        List<PPLCG.Reakce> ListReakce = new List<PPLCG.Reakce>();
-        List<PPLCG.Stiny> ListStiny = new List<PPLCG.Stiny>();
-        List<string> Reakce = new List<string>();
-        List<string> Stiny = new List<string>();
-        List<string> Druhy = new List<string>();
+        List<AKarta> Karty = new List<AKarta>();
         private void NovaKarta(object sender, RoutedEventArgs e)
         {
-            KartaOkno ko = new KartaOkno();
-            ko.Init(Reakce, Stiny);
-            if (ko.ShowDialog().Value)
+            KartaVyber kv = new KartaVyber();
+            if (kv.ShowDialog().Value)
             {
-                PPLCG.IKarta k = ko.GetKartu();
-                Karty.Add(k);
-                listBox1.Items.Add(new Label()
+                KartaOkno ko = new KartaOkno();
+                ko.Init(kv.Karta);
+                if (ko.ShowDialog().Value)
                 {
-                    Content = k.Karta.Id,
-                });
-                SelectLast();
-                Actualize(k);
+                    Karty.Add(kv.Karta);
+                    listBox1.Items.Add(new Label()
+                    {
+                        Content = kv.Karta.Karta.Id,
+                    });
+                    SelectLast();
+                }
             }
+            else return;
 
         }
-
-        private void NewKarta(object sender, RoutedEventArgs e)
-        {
-            listBox1.Items.Clear();
-            foreach (PPLCG.IKarta k in Karty) listBox1.Items.Add(new Label()
-            {
-                Content = k.Karta.Id,
-            });
-        }
+        
         public void SelectLast()
         {
             listBox1.SelectedIndex = listBox1.Items.Count - 1;
@@ -138,188 +66,110 @@ namespace CardFiller
         {
            if(l.Items.Count>0) l.SelectedIndex = l.Items.Count - 1;
         }
-        public void Actualize()
-        {
-            foreach (PPLCG.IKarta k in Karty)
-            {
-                if (!Druhy.Contains(k.Karta.Druh)) Druhy.Add(k.Karta.Druh);
-                foreach (string s in k.Karta.Reakce)
-                    if (!Reakce.Contains(s)) Reakce.Add(s);
-                if (k is PPLCG.KartaNepritel) foreach (string s in (k as PPLCG.KartaNepritel).Nepritel.Stin)
-                        if (!Stiny.Contains(s)) Stiny.Add(s);
-                if (k is PPLCG.KartaLokace) foreach (string s in (k as PPLCG.KartaLokace).Lokace.Stin)
-                        if (!Stiny.Contains(s)) Stiny.Add(s);
-                if (k is PPLCG.KartaZrada) foreach (string s in (k as PPLCG.KartaZrada).Zrada.Stin)
-                        if (!Stiny.Contains(s)) Stiny.Add(s);
-            }
-            NewKarta(null, null);
-            NewAkce(null, null);
-            NewDruhy(null, null);
-            NewStiny(null, null);
-
-        }
-        public void Actualize(PPLCG.IKarta k)
-        {
-            if (!Druhy.Contains(k.Karta.Druh)) Druhy.Add(k.Karta.Druh);
-            foreach (string s in k.Karta.Reakce)
-                if (!Reakce.Contains(s)) Reakce.Add(s);
-            if (k is PPLCG.KartaNepritel) foreach (string s in (k as PPLCG.KartaNepritel).Nepritel.Stin)
-                    if (!Stiny.Contains(s)) Stiny.Add(s);
-            if (k is PPLCG.KartaLokace) foreach (string s in (k as PPLCG.KartaLokace).Lokace.Stin)
-                    if (!Stiny.Contains(s)) Stiny.Add(s);
-            if (k is PPLCG.KartaZrada) foreach (string s in (k as PPLCG.KartaZrada).Zrada.Stin)
-                    if (!Stiny.Contains(s)) Stiny.Add(s);
-            NewAkce(null,null);
-            NewDruhy(null, null);
-            NewStiny(null, null);
-
-        }
-        private void UpravKartu(object sender, RoutedEventArgs e)
-        {
-            if (listBox1.SelectedIndex != -1)
-            {
-                KartaOkno ko = new KartaOkno(Karty[listBox1.SelectedIndex]);
-                ko.Init(Reakce, Stiny);
-                if (ko.ShowDialog().Value)
-                {
-                    PPLCG.IKarta k = ko.GetKartu();
-                    Karty[listBox1.SelectedIndex] = k;
-                    Actualize(k);
-                }
-            }
-        }
         private void DelKartu(object sender, RoutedEventArgs e)
         {
-            if (listBox1.SelectedIndex != -1)
+            string cesta = Properties.Settings.Default.LokaceKaret + "/" + listBox1.SelectedItem + ".pk";
+            if (File.Exists(cesta))
             {
-                Karty.RemoveAt(listBox1.SelectedIndex);
-                listBox1.Items.RemoveAt(listBox1.SelectedIndex);
-                SelectLast();
+                File.Delete(cesta);
+                listBox1.Items.Remove(listBox1.SelectedItem);
             }
         }
-
-        private void AddAkce(object sender, RoutedEventArgs e)
+        
+        private void LoadKarty(string cesta)
         {
-            MyListWindow mlw = new MyListWindow();
-            mlw.Jmeno = "Reakce";
-            mlw.myListControl1.Add();
-            if (mlw.ShowDialog().Value)
+            if (!Directory.Exists(cesta)) return;
+                string[] data = Directory.GetFiles(cesta);
+            Karty.Clear();
+            foreach (string s in data)
             {
-                foreach (string s in mlw.myListControl1.GetSelected())
+                if (s.Contains(".pk"))
                 {
-                    if (!Reakce.Contains(s))
+                    //FileStream f = File.Create(s);
+                    Nini.Config.IniConfigSource source = new Nini.Config.IniConfigSource(s);
+                    PPLCG.DataKarta dataKarta = new PPLCG.DataKarta();
+                    AKarta k = null;
+                    Nini.Config.IConfig config = source.Configs["Karta"];
+                    if(config!=null) dataKarta.Load(config);
+                    switch(dataKarta.Typ)
                     {
-                        Reakce.Add(s);
-                        listBoxReakce.Items.Add(s);
+                        case PPLCG.ETypy.Doplnek:
+                            PPLCG.DataDoplnek dd = new PPLCG.DataDoplnek();
+                            dd.Load(config);
+                            k = new KartaDoplnek(dd);
+                            break;
+                        case PPLCG.ETypy.Hrdina:
+                            PPLCG.DataHrdina dh = new PPLCG.DataHrdina();
+                            dh.Load(config);
+                            k = new KartaHrdina(dh);
+                            break;
+                        case PPLCG.ETypy.Lokace:
+                            PPLCG.DataLokace dl = new PPLCG.DataLokace();
+                            dl.Load(config);
+                            k = new KartaLokace(dl);
+                            break;
+                        case PPLCG.ETypy.Nepritel:
+                            PPLCG.DataNepritel dn = new PPLCG.DataNepritel();
+                            dn.Load(config);
+                            k = new KartaNepritel(dn);
+                            break;
+                        case PPLCG.ETypy.Spojenec:
+                            PPLCG.DataSpojenec ds = new PPLCG.DataSpojenec();
+                            ds.Load(config);
+                            k = new KartaSpojenec(ds);
+                            break;
+                        case PPLCG.ETypy.Udalost:
+                            PPLCG.DataUdalost du = new PPLCG.DataUdalost();
+                            du.Load(config);
+                            k = new KartaUdalost(du);
+                            break;
+                        case PPLCG.ETypy.Zrada:
+                            PPLCG.DataZrada dz = new PPLCG.DataZrada();
+                            dz.Load(config);
+                            k = new KartaZrada(dz);
+                            break;
+                    }
+                    if (k != null)
+                    {
+                        Karty.Add(k);
+                        listBox1.Items.Add(k.Karta.Id);
                     }
                 }
-                SelectLast(listBoxReakce);
             }
-           
-        }
-
-        private void LoadKarty(object sender, RoutedEventArgs e)
-        {
-            System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
-            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                string[] data = Directory.GetFiles(fbd.SelectedPath);
-                Karty.Clear();
-                foreach (string s in data)
-                {
-                    if (s.Contains(".pk"))
-                    {
-                        //FileStream f = File.Create(s);
-                        Nini.Config.IniConfigSource source = new Nini.Config.IniConfigSource(s);
-                        PPLCG.IKarta k = CreateIKarta(source);
-                        if (k != null)
-                        {
-                            if (k.Load(source)) Karty.Add(k);
-                        }
-                        source.Save();
-                    }
-                }
-                Actualize();
-            }
-
-        }
-        private PPLCG.IKarta CreateIKarta(Nini.Config.IniConfigSource source)
-        {
-            if (source.Configs.Count != 2) return null;
-            switch(source.Configs[1].Name)
-            {
-                case "Hrdina": return new PPLCG.KartaHrdina();
-                case "Doplnek": return new PPLCG.KartaDoplnek();
-                case "Lokace": return new PPLCG.KartaLokace();
-                case "Nepritel": return new PPLCG.KartaNepritel();
-                case "Spojenec": return new PPLCG.KartaSpojenec();
-                case "Udalost": return new PPLCG.KartaUdalost();
-                case "Zrada": return new PPLCG.KartaZrada();
-                default: return null;
-            }
-        }
-        private void DelAkce(object sender, RoutedEventArgs e)
-        {
-            if (listBoxReakce.SelectedIndex != -1)
-            {
-                Reakce.RemoveAt(listBoxReakce.SelectedIndex);
-                listBoxReakce.Items.RemoveAt(listBoxReakce.SelectedIndex);
-                SelectLast(listBoxReakce);
-            }
-        }
-
-        private void DelStin(object sender, RoutedEventArgs e)
-        {
-            if (listBoxStiny.SelectedIndex != -1)
-            {
-                Stiny.RemoveAt(listBoxStiny.SelectedIndex);
-                listBoxStiny.Items.RemoveAt(listBoxStiny.SelectedIndex);
-                SelectLast(listBoxStiny);
-            }
-        }
-        private void DelDruh(object sender, RoutedEventArgs e)
-        {
-            if (listBoxDruhy.SelectedIndex != -1)
-            {
-                Druhy.RemoveAt(listBoxDruhy.SelectedIndex);
-                listBoxDruhy.Items.RemoveAt(listBoxDruhy.SelectedIndex);
-                SelectLast(listBoxDruhy);
-            }
-        }
-
-        private void NewAkce(object sender, RoutedEventArgs e)
-        {
-            listBoxReakce.Items.Clear();
-            Reakce.Sort();
-            foreach (string s in Reakce) listBoxReakce.Items.Add(s);
-        }
-        private void NewDruhy(object sender, RoutedEventArgs e)
-        {
-            listBoxDruhy.Items.Clear();
-            Druhy.Sort();
-            foreach (string s in Druhy) listBoxDruhy.Items.Add(s);
-        }
-        private void NewStiny(object sender, RoutedEventArgs e)
-        {
-            listBoxStiny.Items.Clear();
-            Stiny.Sort();
-            foreach (string s in Stiny) listBoxStiny.Items.Add(s);
         }
 
         private void SaveKarty(object sender, RoutedEventArgs e)
         {
-            System.Windows.Forms.FolderBrowserDialog fbd = new System.Windows.Forms.FolderBrowserDialog();
-            if (fbd.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            string cesta = Properties.Settings.Default.LokaceKaret;
+            foreach (AKarta k in Karty)
             {
-                foreach (PPLCG.IKarta k in Karty)
-                {
-                    string path = fbd.SelectedPath + "/" + k.Karta.Id + ".pk";
-                    FileStream f = File.Create(path);
-                    f.Close();
-                    Nini.Config.IniConfigSource source = new Nini.Config.IniConfigSource(path);
-                    k.Save(source);
-                    source.Save();
-                }
+                string path = cesta + "/" + k.Karta.Id + ".pk";
+                FileStream f = File.Create(path);
+                f.Close();
+                Nini.Config.IniConfigSource source = new Nini.Config.IniConfigSource(path);
+                source.AddConfig("Karta");
+                k.Karta.Save(source.Configs["Karta"]);
+                source.Save();
+            }
+        }
+
+        private void listBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1) return;
+            //ViewKarta vk = new ViewKarta();
+            //vk.Init(Karty[listBox1.SelectedIndex] as PPLCG.DataKarta);
+            //panelKarta.Content = vk;
+            ScrollViewer sv = new ScrollViewer() { Content = Karty[listBox1.SelectedIndex].sp };
+            panelKarta.Content = sv;
+
+        }
+
+        private void ActKarty(object sender, RoutedEventArgs e)
+        {
+            listBox1.Items.Clear();
+            foreach(PPLCG.IKarta dk in Karty)
+            {
+                listBox1.Items.Add(dk.Id);
             }
         }
     }

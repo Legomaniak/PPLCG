@@ -69,13 +69,12 @@
     <Compile Include="DataZrada.cs" />
     <Compile Include="EReturn.cs" />
     <Compile Include="Faze.cs" />
+    <Compile Include="IKarta.cs" />
     <Compile Include="ISaveLoad.cs" />
+    <Compile Include="MyString.cs" />
     <Compile Include="NazevAkce.cs" />
-    <Compile Include="Reakce.cs" />
     <Compile Include="DataSpojenec.cs" />
-    <Compile Include="Kvality.cs" />
     <Compile Include="Sfery.cs" />
-    <Compile Include="Stiny.cs" />
     <Compile Include="Druhy.cs" />
     <Compile Include="Tag.cs" />
     <Compile Include="Typy.cs" />

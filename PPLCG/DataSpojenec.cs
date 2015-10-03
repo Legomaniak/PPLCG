@@ -44,6 +44,7 @@ namespace PPLCG
              Utok = 0;
              Obrana = 0;
              Zivoty = 0;
+            Typ = ETypy.Spojenec;
         }
         public DataSpojenec(DataKarta dk, int zivoty, int utok, int obrana, int vule, int zdroje) : base(dk)
         {

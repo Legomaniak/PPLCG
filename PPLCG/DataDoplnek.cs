@@ -16,6 +16,7 @@ namespace PPLCG
         public DataDoplnek()
         {
             Cena = 0;
+            Typ = ETypy.Doplnek;
         }
         public DataDoplnek(DataKarta dk, int cena) : base(dk)
         { 

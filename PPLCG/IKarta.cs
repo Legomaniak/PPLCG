@@ -5,8 +5,8 @@ using System.Text;
 
 namespace PPLCG
 {
-    public enum Kvality
+    public interface IKarta: ISaveLoad
     {
-        Normalni, Jedinecna, SuperUltraMegaJedinecna, HustoKrutaPrisna
+        string Id { get; set; }
     }
 }

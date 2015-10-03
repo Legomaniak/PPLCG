@@ -19,121 +19,106 @@ namespace CardFiller
     /// </summary>
     public partial class ViewKarta : UserControl
     {
+        protected List<UIElement> Prvky = new List<UIElement>();
+        public void Init()
+        {
+            SP.Children.Clear();
+            foreach (UIElement u in Prvky) SP.Children.Add(u);
+        }
+        MyTextBoxNamed boxId = new MyTextBoxNamed() { Jmeno = "ID" };
+        MyTextBoxNamed boxJmeno = new MyTextBoxNamed() { Jmeno = "Jméno" };
+        MyTextBoxNamed boxPopis = new MyTextBoxNamed() { Jmeno = "Popis" };
+        MyTextBoxNamed boxCitace = new MyTextBoxNamed() { Jmeno = "Citace" };
+        MyTextBoxNamed boxAutor = new MyTextBoxNamed() { Jmeno = "Autor" };
+        MyCheckBoxNamed boxKvalita = new MyCheckBoxNamed() { Jmeno = "Unikátní" };
+        MyLabelNamed boxTyp = new MyLabelNamed() { Jmeno = "Typ" };
+        MyComboBoxNamed boxSfera = new MyComboBoxNamed() { Jmeno = "Sféra" };
+        MyListControlNamed boxDruh = new MyListControlNamed() { Jmeno = "Druh" };
+        MyListControlNamed boxReakce = new MyListControlNamed() { Jmeno = "Reakce" };
         public ViewKarta()
         {
             InitializeComponent();
-            foreach (string s in Enum.GetNames(typeof(PPLCG.ETypy)))
-            {
-                boxTyp.Items.Add(s);
-            }
-            boxTyp.SelectedIndex = 0;
+            boxSfera.ComboBox.Items.Clear();
             foreach (string s in Enum.GetNames(typeof(PPLCG.ESfery)))
             {
-                boxSfera.Items.Add(s);
+                boxSfera.ComboBox.Items.Add(new ComboBoxItem() { Content = s });
             }
-            boxSfera.SelectedIndex = 0;
+            Prvky.Add(boxId);
+            Prvky.Add(boxJmeno);
+            Prvky.Add(boxPopis);
+            Prvky.Add(boxCitace);
+            Prvky.Add(boxAutor);
+            Prvky.Add(boxTyp);
+            Prvky.Add(boxSfera);
+            Prvky.Add(boxKvalita);
+            Prvky.Add(boxDruh);
+            Prvky.Add(boxReakce);
+            Init();
         }
-        List<string> stiny = new List<string>();
-        public void Init(List<string> reakce, List<string> stiny)
+        public ViewKarta(bool init)
         {
-            myListControl1.data = reakce;
-            this.stiny = stiny;
+            InitializeComponent();
+            //DataKarta = new PPLCG.DataKarta();
+            //Prvky.Add(boxId);
+            //Prvky.Add(boxJmeno);
+            //Prvky.Add(boxPopis);
+            //Prvky.Add(boxCitace);
+            //Prvky.Add(boxAutor);
+            //Prvky.Add(boxTyp);
+            //Prvky.Add(boxSfera);
+            //Prvky.Add(boxKvalita);
+            //Prvky.Add(boxDruh);
+            //Prvky.Add(boxReakce);
+            //Init();
         }
-        public PPLCG.IKarta GetKarta()
+        public void Init(PPLCG.DataKarta data)
         {
-           PPLCG.DataKarta dataKarta = new PPLCG.DataKarta(boxId.Text, boxJmeno.Text, boxPopis.Text, (PPLCG.ESfery)boxSfera.SelectedIndex, (PPLCG.ETypy)boxTyp.SelectedIndex, boxKvalita.IsChecked.Value, myListControl1.GetSelected().ToArray(), (string)boxDruh.Text, new PPLCG.Citace(boxCitace.Text, boxAutor.Text));
-           PPLCG.IKarta karta = null;
-           switch (dataKarta.Typ)
-           {
-               case PPLCG.ETypy.Doplnek: karta = new PPLCG.KartaDoplnek() { Karta = dataKarta, Doplnek = (grid1.Children[0] as ViewDoplnek).GetData() };
-                   break;
-               case PPLCG.ETypy.Hrdina: karta = new PPLCG.KartaHrdina() { Karta = dataKarta, Hrdina = (grid1.Children[0] as ViewHrdina).GetData() };
-                   break;
-               case PPLCG.ETypy.Lokace: karta = new PPLCG.KartaLokace() { Karta = dataKarta, Lokace = (grid1.Children[0] as ViewLokace).GetData() };
-                   break;
-               case PPLCG.ETypy.Nepritel: karta = new PPLCG.KartaNepritel() { Karta = dataKarta, Nepritel = (grid1.Children[0] as ViewNepritel).GetData() };
-                   break;
-               case PPLCG.ETypy.Spojenec: karta = new PPLCG.KartaSpojenec() { Karta = dataKarta, Spojenec = (grid1.Children[0] as ViewSpojenec).GetData() };
-                   break;
-               case PPLCG.ETypy.Udalost: karta = new PPLCG.KartaUdalost() { Karta = dataKarta, Udalost = (grid1.Children[0] as ViewUdalost).GetData() };
-                   break;
-               case PPLCG.ETypy.Zrada: karta = new PPLCG.KartaZrada() { Karta = dataKarta, Zrada = (grid1.Children[0] as ViewZrada).GetData() };
-                   break;
-           }
 
-           return karta;
-        }
-        public void SetKarta(PPLCG.IKarta karta)
-        {
-            PPLCG.DataKarta k = karta.Karta;
-            boxId.Text = k.Id;
-            boxJmeno.Text = k.Jmeno;
-            boxPopis.Text = k.Popis;
-            boxCitace.Text = k.Citace.Text;
-            boxAutor.Text = k.Citace.Autor;
-            boxDruh.SelectedItem = k.Druh;
-            boxSfera.SelectedIndex = (int)k.Sfera;
-            boxTyp.SelectedIndex = (int)k.Typ;
-            foreach (string s in k.Reakce)
-                myListControl1.Add(s);
-            //boxKvalita.Dispatcher.BeginInvoke((Action)(() =>
-            //{
-                boxKvalita.IsChecked = k.Kvalita;
-            //}));
+            boxDruh.ListControl.Init(data.Druh);
+            boxReakce.ListControl.Init(data.Reakce);
+            
+            Binding myBinding = new Binding("Id");
+            myBinding.Source = data;
+            myBinding.Mode = BindingMode.TwoWay;
+            boxId.TextBox.SetBinding(TextBox.TextProperty, myBinding);
 
-                switch (karta.Karta.Typ)
-                {
-                    case PPLCG.ETypy.Doplnek: (grid1.Children[0] as ViewDoplnek).SetData((karta as PPLCG.KartaDoplnek).Doplnek); 
-                        break;
-                    case PPLCG.ETypy.Hrdina: (grid1.Children[0] as ViewHrdina).SetData((karta as PPLCG.KartaHrdina).Hrdina); 
-                        break;
-                    case PPLCG.ETypy.Lokace: (grid1.Children[0] as ViewLokace).SetData((karta as PPLCG.KartaLokace).Lokace); 
-                        break;
-                    case PPLCG.ETypy.Nepritel: (grid1.Children[0] as ViewNepritel).SetData((karta as PPLCG.KartaNepritel).Nepritel); 
-                        break;
-                    case PPLCG.ETypy.Spojenec: (grid1.Children[0] as ViewSpojenec).SetData((karta as PPLCG.KartaSpojenec).Spojenec); 
-                        break;
-                    case PPLCG.ETypy.Udalost: (grid1.Children[0] as ViewUdalost).SetData((karta as PPLCG.KartaUdalost).Udalost); 
-                        break;
-                    case PPLCG.ETypy.Zrada: (grid1.Children[0] as ViewZrada).SetData((karta as PPLCG.KartaZrada).Zrada); 
-                        break;
-                }
-        }
+            myBinding = new Binding("Jmeno");
+            myBinding.Source = data;
+            myBinding.Mode = BindingMode.TwoWay;
+            boxJmeno.TextBox.SetBinding(TextBox.TextProperty, myBinding);
 
-        private void boxTyp_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            grid1.Children.Clear();
-            // Spojenec, Doplnek, Udalost, Lokace, Zrada, Nepritel, Hrdina
-            switch (boxTyp.SelectedIndex)
-            {
-                case 0:
-                    grid1.Children.Add(new ViewSpojenec());
-                    break;
-                case 1:
-                    grid1.Children.Add(new ViewDoplnek());
-                    break;
-                case 2:
-                    grid1.Children.Add(new ViewUdalost());
-                    break;
-                case 3:
-                    ViewLokace l = new ViewLokace();
-                    l.Init(stiny);
-                    grid1.Children.Add(l);
-                    break;
-                case 4:
-                    ViewZrada z = new ViewZrada();
-                    z.Init(stiny);
-                    grid1.Children.Add(z);
-                    break;
-                case 5:
-                    ViewNepritel n = new ViewNepritel();
-                    n.Init(stiny);
-                    grid1.Children.Add(n);
-                    break;
-                case 6:
-                    grid1.Children.Add(new ViewHrdina());
-                    break;
-            }
+            myBinding = new Binding("Popis");
+            myBinding.Source = data;
+            myBinding.Mode = BindingMode.TwoWay;
+            boxPopis.TextBox.SetBinding(TextBox.TextProperty, myBinding);
+
+            myBinding = new Binding("Text");
+            myBinding.Source = data;
+            myBinding.Mode = BindingMode.TwoWay;
+            boxCitace.TextBox.SetBinding(TextBox.TextProperty, myBinding);
+
+            myBinding = new Binding("Autor");
+            myBinding.Source = data;
+            myBinding.Mode = BindingMode.TwoWay;
+            boxAutor.TextBox.SetBinding(TextBox.TextProperty, myBinding);
+
+            myBinding = new Binding("Typ");
+            myBinding.Source = data;
+            myBinding.Mode = BindingMode.OneWay;
+            boxTyp.Text.SetBinding(Label.ContentProperty, myBinding);
+
+            myBinding = new Binding("Sfera");
+            myBinding.Source = data;
+            myBinding.Mode = BindingMode.TwoWay;
+            myBinding.Converter = new ConvertorSfera();
+            boxSfera.ComboBox.SetBinding(ComboBox.SelectedIndexProperty, myBinding);
+            
+            myBinding = new Binding("Kvalita");
+            myBinding.Source = data;
+            myBinding.Mode = BindingMode.TwoWay;
+            boxKvalita.CheckBox.SetBinding(CheckBox.IsCheckedProperty, myBinding);
+
         }
+        
     }
 }

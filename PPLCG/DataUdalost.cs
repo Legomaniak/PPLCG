@@ -16,6 +16,7 @@ namespace PPLCG
         public DataUdalost()
         {
             Cena = 0;
+            Typ = ETypy.Udalost;
         }
         public DataUdalost(DataKarta dk, int cena) : base(dk)
         {

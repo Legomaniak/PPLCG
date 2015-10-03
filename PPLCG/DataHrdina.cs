@@ -44,6 +44,7 @@ namespace PPLCG
             Utok = 0;
             Obrana = 0;
             Zivoty = 0;
+            Typ = ETypy.Hrdina;
         }
         public DataHrdina(DataKarta dk, int zivoty, int utok, int obrana, int vule, int hrozba) : base(dk)
         {

@@ -1,0 +1,22 @@
+﻿<Window x:Class="CardFiller.KartaVyber"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CardFiller"
+        mc:Ignorable="d"
+        Title="KartaVyber" Height="300" Width="300">
+    <Grid>
+        <StackPanel Margin="0,0,0,0" Height="244" VerticalAlignment="Top">
+            <RadioButton x:Name="doplek" Content="Doplněk" IsChecked="True"/>
+            <RadioButton x:Name="hrdina" Content="Hrdina"/>
+            <RadioButton x:Name="lokace" Content="Lokace"/>
+            <RadioButton x:Name="nepritel" Content="Nepřítel"/>
+            <RadioButton x:Name="spojenec" Content="Spojenec"/>
+            <RadioButton x:Name="udalost" Content="Událost"/>
+            <RadioButton x:Name="zrada" Content="Zrada"/>
+        </StackPanel>
+        <Button x:Name="button" Content="Vytvořit" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="100" Height="25" IsDefault="True" Click="button_Click"/>
+        <Button x:Name="button_Copy" Content="Zavřít" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="100" Height="25" IsCancel="True"/>
+    </Grid>
+</Window>

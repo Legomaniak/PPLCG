@@ -22,20 +22,11 @@ namespace CardFiller
         {
             InitializeComponent();
         }
-        public KartaOkno(PPLCG.IKarta k)
+        public void Init(AKarta karta)
         {
-            InitializeComponent();
-            karta1.SetKarta(k);
+            ScrollViewer sv = new ScrollViewer() { Content = karta.sp };
+            this.karta.Content = sv;
         }
-        public void Init(List<string> reakce, List<string> stiny)
-        {
-            karta1.Init(reakce, stiny);
-        }
-        public PPLCG.IKarta GetKartu()
-        {
-            return karta1.GetKarta();
-        }
-
         private void buttonOk_Click(object sender, RoutedEventArgs e)
         {
             DialogResult = true;

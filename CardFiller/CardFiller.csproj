@@ -60,52 +60,46 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AKarta.cs" />
+    <Compile Include="Convertors.cs" />
+    <Compile Include="KartaVyber.xaml.cs">
+      <DependentUpon>KartaVyber.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyComponentNamed.xaml.cs">
+      <DependentUpon>MyComponentNamed.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MyString.xaml.cs">
+      <DependentUpon>MyString.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MyTextBoxInt.cs" />
-    <Compile Include="MyTextBoxNamed.xaml.cs">
-      <DependentUpon>MyTextBoxNamed.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewDoplnek.xaml.cs">
-      <DependentUpon>ViewDoplnek.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewHrdina.xaml.cs">
-      <DependentUpon>ViewHrdina.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="ViewDoplnek.cs" />
+    <Compile Include="ViewHrdina.cs" />
     <Compile Include="ViewKarta.xaml.cs">
       <DependentUpon>ViewKarta.xaml</DependentUpon>
     </Compile>
     <Compile Include="KartaOkno.xaml.cs">
       <DependentUpon>KartaOkno.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewLokace.xaml.cs">
-      <DependentUpon>ViewLokace.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="ViewLokace.cs" />
     <Compile Include="MyListControl.xaml.cs">
       <DependentUpon>MyListControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="MyListWindow.xaml.cs">
       <DependentUpon>MyListWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewNepritel.xaml.cs">
-      <DependentUpon>ViewNepritel.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewSpojenec.xaml.cs">
-      <DependentUpon>ViewSpojenec.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewUdalost.xaml.cs">
-      <DependentUpon>ViewUdalost.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ViewZrada.xaml.cs">
-      <DependentUpon>ViewZrada.xaml</DependentUpon>
-    </Compile>
-    <Page Include="MyTextBoxNamed.xaml">
+    <Compile Include="ViewNepritel.cs" />
+    <Compile Include="ViewSpojenec.cs" />
+    <Compile Include="ViewUdalost.cs" />
+    <Compile Include="ViewZrada.cs" />
+    <Page Include="KartaVyber.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ViewDoplnek.xaml">
+    <Page Include="MyComponentNamed.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ViewHrdina.xaml">
+    <Page Include="MyString.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -114,10 +108,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="KartaOkno.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ViewLokace.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -141,22 +131,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="ViewNepritel.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ViewSpojenec.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ViewUdalost.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="ViewZrada.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -176,6 +150,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

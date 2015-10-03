@@ -6,7 +6,7 @@ using Nini.Config;
 
 namespace PPLCG
 {
-    public class DataKarta : ANotifer, ISaveLoad
+    public class DataKarta : ANotifer, IKarta
     {
         public string Id
         {
@@ -65,7 +65,7 @@ namespace PPLCG
             }
         }
         bool _Kvalita = false;
-        public string[] Reakce
+        public List<MyString> Reakce
         {
             get { return _Reakce; }
             set
@@ -73,8 +73,8 @@ namespace PPLCG
                 _Reakce = value; OnPropertyChanged("Reakce");
             }
         }
-        string[] _Reakce;
-        public string Druh
+        List<MyString> _Reakce;
+        public List<MyString> Druh
         {
             get { return _Druh; }
             set
@@ -82,7 +82,7 @@ namespace PPLCG
                 _Druh = value; OnPropertyChanged("Druh");
             }
         }
-        string _Druh = "";
+        List<MyString> _Druh;
         public bool IsValid
         {
             get { return _IsValid; }
@@ -100,12 +100,12 @@ namespace PPLCG
             Sfera = ESfery.Neutralni;
             Typ = ETypy.Spojenec;
             Kvalita = false;
-            Reakce = new string[1] { "None" };
-            Druh = "None";
+            Reakce = new List<MyString>();
+            Druh = new List<MyString>();
             Text = "Nevim.";
             Autor = "Nikdo";
         }
-        public DataKarta(string id, string jmeno, string popis, ESfery sfera, ETypy typ, bool kvalita, string[] reakce, string druh, string text, string autor)
+        public DataKarta(string id, string jmeno, string popis, ESfery sfera, ETypy typ, bool kvalita, List<MyString> reakce, List<MyString> druh, string text, string autor)
         {
             Id = id;
             Jmeno = jmeno;
@@ -141,14 +141,19 @@ namespace PPLCG
                 config.Set("Popis", Popis);
                 config.Set("Sfera", (int)Sfera);
                 config.Set("Typ", (int)Typ);
-                config.Set("Druh", Druh);
                 string s = "";
-                foreach (string ss in Reakce)
-                    if (s == "") s = ss;
-                    else s = s + "," + ss;
+                foreach (MyString ss in Druh)
+                    if (s == "") s = ss.String;
+                    else s = s + "," + ss.String;
+                config.Set("Druh", s);
+                s = "";
+                foreach (MyString ss in Reakce)
+                    if (s == "") s = ss.String;
+                    else s = s + "," + ss.String;
                 config.Set("Reakce", s);
                 config.Set("Text", Text);
                 config.Set("Autor", Autor);
+                config.Set("Kvalita", Kvalita);
                 return EReturn.NoError;
             }
             else return EReturn.Error;
@@ -163,11 +168,27 @@ namespace PPLCG
                 Popis = config.GetString("Popis");
                 Sfera = (ESfery)config.GetInt("Sfera");
                 Typ = (ETypy)config.GetInt("Typ");
-                Popis = config.GetString("Druh");
-                string s = config.GetString("Reakce");
-                string[] Reakce = s.Split(',');
+                string s = config.GetString("Druh");
+                string[] druh = s.Split(',');
+                Druh = new List<MyString>();
+                foreach (string ss in druh)
+                {
+                    MyString ms = new MyString();
+                    ms.String = ss;
+                    Druh.Add(ms);
+                }
+                s = config.GetString("Reakce");
+                string[] reakce = s.Split(',');
+                Reakce = new List<MyString>();
+                foreach (string ss in reakce)
+                {
+                    MyString ms = new MyString();
+                    ms.String = ss;
+                    Reakce.Add(ms);
+                }
                 Text = config.GetString("Text");
                 Autor = config.GetString("Autor");
+                Kvalita = config.GetBoolean("Kvalita");
                 return EReturn.NoError;
             }
             else return EReturn.Error;
